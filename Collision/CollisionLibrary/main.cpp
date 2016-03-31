@@ -1,5 +1,6 @@
 #include "LUtil.h"
 #include <iostream>
+#include <sstream>
 
 void runMainLoop(int val);
 /*
@@ -12,6 +13,10 @@ Side Effects:
 */
 
 bool mode = 1;
+double lastTime;
+int nbFrames = 0;
+int fps = 0;
+
 int main(int argc, char* args[])
 {
 	//Initialize FreeGLUT
@@ -20,10 +25,12 @@ int main(int argc, char* args[])
 	//Create OpenGL 2.1 context
 	glutInitContextVersion(3, 0);
 
+	lastTime = glutGet(GLUT_ELAPSED_TIME);
+
 	//Create Double Buffered Window
 	glutInitDisplayMode(GLUT_DOUBLE);
 	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-	glutCreateWindow("OpenGL");
+	glutCreateWindow("Collision Test FPS: 0");
 
 	//Do post window/context creation initialization
 	if (mode) {
@@ -72,6 +79,20 @@ int main(int argc, char* args[])
 
 void runMainLoop(int val)
 {
+	double currentTime = glutGet(GLUT_ELAPSED_TIME);
+
+	nbFrames++;
+
+	if (currentTime - lastTime >= 1000.0) { 
+		// If last prinf() was more than 1 sec ago								 // printf and reset timer
+		fps = nbFrames * 1000.0 / (currentTime - lastTime);
+		lastTime = currentTime;
+		nbFrames = 0;
+		std::stringstream c;
+		c << "Collision Test FPS: " << fps;
+		glutSetWindowTitle(c.str().c_str());
+	}
+
 	//Frame logic
 	if (mode) {
 		update();
