@@ -69,8 +69,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>D:\vs_libaries\freeglut\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\vs_libaries\freeglut\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\vs_libaries\freeglut\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\vs_libaries\freeglut\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -124,21 +124,38 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp" />
-    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="BoundingSphere.cpp" />
+    <ClCompile Include="CollisionResult.cpp" />
+    <ClCompile Include="Physical.cpp" />
     <ClCompile Include="GLShapes.cpp" />
     <ClCompile Include="LUtil.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Octree.cpp" />
+    <ClCompile Include="Player2D.cpp" />
+    <ClCompile Include="Player3D.cpp" />
+    <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="Ray.cpp" />
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
+    <ClInclude Include="BoundingSphere.h" />
+    <ClInclude Include="CollisionResult.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Physical.h" />
     <ClInclude Include="GLShapes.h" />
     <ClInclude Include="LOpenGL.h" />
     <ClInclude Include="LUtil.h" />
     <ClInclude Include="Octree.h" />
+    <ClInclude Include="Player2D.h" />
+    <ClInclude Include="Player3D.h" />
+    <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="Ray.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Vector.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CollisionLibrary.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

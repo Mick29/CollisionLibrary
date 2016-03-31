@@ -9,7 +9,11 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 const int SCREEN_FPS = 60;
 
+extern GLfloat gCameraX, gCameraY;
+extern bool renderTree;
+
 bool initGL();
+bool initGL2D();
 /*
 Pre Condition:
 -A valid OpenGL context
@@ -25,6 +29,7 @@ Side Effects:
 */
 
 void update();
+void update2D();
 /*
 Pre Condition:
 -None
@@ -35,6 +40,7 @@ Side Effects:
 */
 
 void render();
+void render2D();
 /*
 Pre Condition:
 -A valid OpenGL context
@@ -46,6 +52,14 @@ Side Effects:
 -Swaps the front/back buffer
 */
 
+// Derived class keyboard
+void mouseButton(int button, int state, int x, int y);
+void mouseMove(int x, int y);
+
+void Keyboard(unsigned char key, int x, int y);
+void KeyboardUp(unsigned char key, int x, int y);
+
 void processSpecialKeys(int key, int xx, int yy);
 void updateCamera();
 void reshape(GLsizei width, GLsizei height);
+void reshape2D(GLsizei width, GLsizei height);

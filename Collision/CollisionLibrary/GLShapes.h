@@ -1,3 +1,4 @@
+//Deprecated
 #pragma once
 
 #include "LOpenGL.h"

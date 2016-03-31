@@ -94,3 +94,4 @@ public:
 	static const Vec3 NEGATIVE_X_UNIT;
 	static const Vec3 NEGATIVE_Z_UNIT;
 };
+

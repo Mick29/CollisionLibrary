@@ -1,9 +1,17 @@
 #pragma once
 
 #include "AABB.h"
+#include "Ray.h"
+#include "CollisionResult.h"
+#include <gl\freeglut.h>
+#include "LUtil.h"
 
-AABB::AABB(): mMin(Vec3(0, 0, 0)), mMax(Vec3(0, 0, 0)) {}
-AABB::AABB(const Vec3& min, const Vec3& max) : mMin(min), mMax(max) {}
+float squared(float i) {
+	return i * i;
+
+}
+AABB::AABB() : mMin(Vec3(0, 0, 0)), mMax(Vec3(0, 0, 0)), mRayLength(0) {}
+AABB::AABB(const Vec3& min, const Vec3& max) : mMin(min), mMax(max), mRayLength(0) {}
 
 bool AABB::intersect(AABB box) {
 	return (mMax.x > box.getMin().x &&
@@ -12,6 +20,59 @@ bool AABB::intersect(AABB box) {
 		mMin.y < box.getMax().y &&
 		mMax.z > box.getMin().z &&
 		mMin.z < box.getMax().z);
+}
+
+bool AABB::intersect(Ray r) {
+	float tMin, tMax, tYMin, tYMax, tZMin, tZMax;
+	
+	tMin = (mMin.x - r.getOrigin().x) * r.getInverseDirection().x;
+	tMax = (mMax.x - r.getOrigin().x) * r.getInverseDirection().x;
+
+	tYMin = (mMin.y - r.getOrigin().y) * r.getInverseDirection().y;
+	tYMax = (mMax.y - r.getOrigin().y) * r.getInverseDirection().y;
+
+	if ((tMax > tYMax) || (tYMin > tMax)) {
+		mRayLength = tMin;
+		return false;
+	}
+	if (tYMin > tMin) {
+		tMin = tYMin;
+	}
+	if (tYMax < tMax) {
+		tMax = tYMax;
+	}
+
+	tZMin = (mMin.z - r.getOrigin().z) * r.getInverseDirection().z;
+	tZMax = (mMax.z - r.getOrigin().z) * r.getInverseDirection().z;
+
+	if ((tMin > tZMax) || tZMin > tMax) {
+		mRayLength = tMin;
+		return false;
+	}
+	if (tZMin > tZMin) {
+		tMin = tZMin;
+	}
+	if (tZMax < tMax) {
+		tMax = tZMax;
+	}
+
+	//return ((tMin < i1) && (tMax > i0));
+	setRayLength(tMax);
+
+	return true;
+}
+
+bool AABB::intersect(BoundingSphere s) {
+	float dist_squared = s.getRadius() * s.getRadius();
+	
+	if (s.getCentre().x < mMin.x) dist_squared -= squared(s.getCentre().x - mMin.x);
+	else if (s.getCentre().x > mMax.y) dist_squared -= squared(s.getCentre().x - mMax.x);
+	if (s.getCentre().y < mMin.y) dist_squared -= squared(s.getCentre().y - mMin.y);
+	else if (s.getCentre().y > mMax.y) dist_squared -= squared(s.getCentre().y - mMax.y);
+	if (s.getCentre().z < mMin.z) dist_squared -= squared(s.getCentre().z - mMin.z);
+	else if (s.getCentre().z > mMax.y) dist_squared -= squared(s.getCentre().z - mMax.z);
+
+	return dist_squared > 0;
 }
 
 bool AABB::containsPoint(Vec3 point) {
@@ -26,4 +87,204 @@ Vec3 AABB::getMin() {
 
 Vec3 AABB::getMax() {
 	return mMax;
+}
+
+float AABB::getRayLength() {
+	return mRayLength;
+}
+
+void AABB::setRayLength(float l) {
+	mRayLength = l;
+}
+
+void AABB::renderWireframe() {
+	Vec3 verts[8];
+	verts[0] = getMin();
+	verts[1] = Vec3(getMin().x, getMin().y, getMax().z);
+	verts[2] = Vec3(getMin().x, getMax().y, getMin().z);
+	verts[3] = Vec3(getMax().x, getMin().y, getMin().z);
+
+	verts[7] = getMax();
+	verts[4] = Vec3(getMax().x, getMax().y, getMin().z);
+	verts[5] = Vec3(getMax().x, getMin().y, getMax().z);
+	verts[6] = Vec3(getMin().x, getMax().y, getMax().z);
+
+	glLineWidth(1.0f);
+
+	glBegin(GL_LINES);
+	glVertex3f(verts[0].x, verts[0].y, verts[0].z);
+	glVertex3f(verts[1].x, verts[1].y, verts[1].z);
+
+	glVertex3f(verts[0].x, verts[0].y, verts[0].z);
+	glVertex3f(verts[2].x, verts[2].y, verts[2].z);
+
+	glVertex3f(verts[0].x, verts[0].y, verts[0].z);
+	glVertex3f(verts[3].x, verts[3].y, verts[3].z);
+
+	glVertex3f(verts[7].x, verts[7].y, verts[7].z);
+	glVertex3f(verts[4].x, verts[4].y, verts[4].z);
+
+	glVertex3f(verts[7].x, verts[7].y, verts[7].z);
+	glVertex3f(verts[5].x, verts[5].y, verts[5].z);
+
+	glVertex3f(verts[7].x, verts[7].y, verts[7].z);
+	glVertex3f(verts[6].x, verts[6].y, verts[6].z);
+
+	glVertex3f(verts[1].x, verts[1].y, verts[1].z);
+	glVertex3f(verts[6].x, verts[6].y, verts[6].z);
+
+	glVertex3f(verts[1].x, verts[1].y, verts[1].z);
+	glVertex3f(verts[5].x, verts[5].y, verts[5].z);
+
+	glVertex3f(verts[4].x, verts[4].y, verts[4].z);
+	glVertex3f(verts[2].x, verts[2].y, verts[2].z);
+
+	glVertex3f(verts[4].x, verts[4].y, verts[4].z);
+	glVertex3f(verts[3].x, verts[3].y, verts[3].z);
+
+	glVertex3f(verts[2].x, verts[2].y, verts[2].z);
+	glVertex3f(verts[6].x, verts[6].y, verts[6].z);
+
+	glVertex3f(verts[3].x, verts[3].y, verts[3].z);
+	glVertex3f(verts[5].x, verts[5].y, verts[5].z);
+
+	glEnd();
+}
+
+void AABB::renderSolid() {
+	Vec3 verts[8];
+	verts[0] = getMin();
+	verts[1] = Vec3(getMin().x, getMin().y, getMax().z);
+	verts[2] = Vec3(getMin().x, getMax().y, getMin().z);
+	verts[3] = Vec3(getMax().x, getMin().y, getMin().z);
+
+	verts[7] = getMax();
+	verts[4] = Vec3(getMax().x, getMax().y, getMin().z);
+	verts[5] = Vec3(getMax().x, getMin().y, getMax().z);
+	verts[6] = Vec3(getMin().x, getMax().y, getMax().z);
+
+	glBegin(GL_QUADS);
+	//Front Face
+	glVertex3f(verts[0].x, verts[0].y, verts[0].z);
+	glVertex3f(verts[3].x, verts[3].y, verts[3].z);
+	glVertex3f(verts[4].x, verts[4].y, verts[4].z);
+	glVertex3f(verts[2].x, verts[2].y, verts[2].z);
+
+	//Right Face
+	glVertex3f(verts[3].x, verts[3].y, verts[3].z);
+	glVertex3f(verts[5].x, verts[5].y, verts[5].z);
+	glVertex3f(verts[7].x, verts[7].y, verts[7].z);
+	glVertex3f(verts[4].x, verts[4].y, verts[4].z);
+
+	//Back Face
+	glVertex3f(verts[1].x, verts[1].y, verts[1].z);
+	glVertex3f(verts[5].x, verts[5].y, verts[5].z);
+	glVertex3f(verts[7].x, verts[7].y, verts[7].z);
+	glVertex3f(verts[6].x, verts[6].y, verts[6].z);
+
+	//Left Face
+	glVertex3f(verts[0].x, verts[0].y, verts[0].z);
+	glVertex3f(verts[1].x, verts[1].y, verts[1].z);
+	glVertex3f(verts[6].x, verts[6].y, verts[6].z);
+	glVertex3f(verts[2].x, verts[2].y, verts[2].z);
+
+	//Top Face
+	glVertex3f(verts[2].x, verts[2].y, verts[2].z);
+	glVertex3f(verts[4].x, verts[4].y, verts[4].z);
+	glVertex3f(verts[7].x, verts[7].y, verts[7].z);
+	glVertex3f(verts[6].x, verts[6].y, verts[6].z);
+
+	//Bottom Face
+	glVertex3f(verts[0].x, verts[0].y, verts[0].z);
+	glVertex3f(verts[3].x, verts[3].y, verts[3].z);
+	glVertex3f(verts[5].x, verts[5].y, verts[5].z);
+	glVertex3f(verts[6].x, verts[6].y, verts[6].z);
+
+	glEnd();
+
+	glLineWidth(2.0f);
+
+	glColor3f(0xFF, 0xFF, 0xFF);
+
+	glBegin(GL_LINES);
+	glVertex3f(verts[0].x, verts[0].y, verts[0].z);
+	glVertex3f(verts[1].x, verts[1].y, verts[1].z);
+
+	glVertex3f(verts[0].x, verts[0].y, verts[0].z);
+	glVertex3f(verts[2].x, verts[2].y, verts[2].z);
+
+	glVertex3f(verts[0].x, verts[0].y, verts[0].z);
+	glVertex3f(verts[3].x, verts[3].y, verts[3].z);
+
+	glVertex3f(verts[7].x, verts[7].y, verts[7].z);
+	glVertex3f(verts[4].x, verts[4].y, verts[4].z);
+
+	glVertex3f(verts[7].x, verts[7].y, verts[7].z);
+	glVertex3f(verts[5].x, verts[5].y, verts[5].z);
+
+	glVertex3f(verts[7].x, verts[7].y, verts[7].z);
+	glVertex3f(verts[6].x, verts[6].y, verts[6].z);
+
+	glVertex3f(verts[1].x, verts[1].y, verts[1].z);
+	glVertex3f(verts[6].x, verts[6].y, verts[6].z);
+
+	glVertex3f(verts[1].x, verts[1].y, verts[1].z);
+	glVertex3f(verts[5].x, verts[5].y, verts[5].z);
+
+	glVertex3f(verts[4].x, verts[4].y, verts[4].z);
+	glVertex3f(verts[2].x, verts[2].y, verts[2].z);
+
+	glVertex3f(verts[4].x, verts[4].y, verts[4].z);
+	glVertex3f(verts[3].x, verts[3].y, verts[3].z);
+
+	glVertex3f(verts[2].x, verts[2].y, verts[2].z);
+	glVertex3f(verts[6].x, verts[6].y, verts[6].z);
+
+	glVertex3f(verts[3].x, verts[3].y, verts[3].z);
+	glVertex3f(verts[5].x, verts[5].y, verts[5].z);
+
+	glEnd();
+}
+
+AABB2D::AABB2D() {
+	mMin = Vec2::ZERO;
+	mMax = Vec2::ZERO;
+}
+
+AABB2D::AABB2D(const Vec2& min, const Vec2& max) {
+	mMin = min;
+	mMax = max;
+}
+
+bool AABB2D::intersect(AABB2D box) {
+	return (mMax.x > box.mMin.x &&
+		mMin.x < box.mMax.x &&
+		mMax.y > box.mMin.y &&
+		mMin.y < box.mMax.y);
+}
+
+void AABB2D::render() {
+	Vec2 verts[8];
+	verts[0] = mMin;
+	verts[1] = Vec2(mMax.x, mMin.y);
+	verts[2] = Vec2(mMin.x, mMax.y);
+	verts[3] = mMax;
+
+	glLineWidth(1.0f);
+
+	glBegin(GL_LINES);
+
+	glVertex2f(verts[0].x, verts[0].y);
+	glVertex2f(verts[1].x, verts[1].y);
+
+	glVertex2f(verts[1].x, verts[1].y);
+	glVertex2f(verts[3].x, verts[3].y);
+
+	glVertex2f(verts[3].x, verts[3].y);
+	glVertex2f(verts[2].x, verts[2].y);
+
+	glVertex2f(verts[2].x, verts[2].y);
+	glVertex2f(verts[0].x, verts[0].y);
+
+	glEnd();
 }
