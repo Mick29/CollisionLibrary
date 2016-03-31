@@ -124,20 +124,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp" />
-    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="BoundingSphere.cpp" />
+    <ClCompile Include="Physical.cpp" />
     <ClCompile Include="GLShapes.cpp" />
     <ClCompile Include="LUtil.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Octree.cpp" />
+    <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="Ray.cpp" />
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
-    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="BoundingSphere.h" />
+    <ClInclude Include="CollisionResult.h" />
+    <ClInclude Include="Physical.h" />
     <ClInclude Include="GLShapes.h" />
     <ClInclude Include="LOpenGL.h" />
     <ClInclude Include="LUtil.h" />
     <ClInclude Include="Octree.h" />
+    <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="Ray.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

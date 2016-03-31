@@ -11,6 +11,7 @@ Side Effects:
 -Sets glutTimerFunc
 */
 
+bool mode = 0;
 int main(int argc, char* args[])
 {
 	//Initialize FreeGLUT
@@ -25,16 +26,38 @@ int main(int argc, char* args[])
 	glutCreateWindow("OpenGL");
 
 	//Do post window/context creation initialization
-	if (!initGL())
-	{
-		printf("Unable to initialize graphics library!\n");
-		return 1;
+	if (mode) {
+		if (!initGL())
+		{
+			printf("Unable to initialize graphics library!\n");
+			return 1;
+		}
+	}
+	else {
+		if (!initGL2D())
+		{
+			printf("Unable to initialize graphics library!\n");
+			return 1;
+		}
 	}
 
 	//Set rendering function
-	glutDisplayFunc(render);
-	glutReshapeFunc(reshape);
-	glutSpecialFunc(processSpecialKeys);
+	if (mode) {
+		glutDisplayFunc(render);
+		glutReshapeFunc(reshape);
+		glutKeyboardFunc(Keyboard);
+		glutMouseFunc(mouseButton);
+		glutMotionFunc(mouseMove);
+		glutSpecialFunc(processSpecialKeys);
+	}
+	else {
+		glutDisplayFunc(render2D);
+		glutReshapeFunc(reshape2D);
+		glutKeyboardFunc(Keyboard);
+		glutMouseFunc(mouseButton);
+		glutMotionFunc(mouseMove);
+		glutSpecialFunc(processSpecialKeys);
+	}
 
 	//Set main loop
 	glutTimerFunc(1000 / SCREEN_FPS, runMainLoop, 0);
@@ -48,8 +71,14 @@ int main(int argc, char* args[])
 void runMainLoop(int val)
 {
 	//Frame logic
-	update();
-	render();
+	if (mode) {
+		update();
+		render();
+	}
+	else {
+		update2D();
+		render2D();
+	}
 
 	//Run frame one more time
 	glutTimerFunc(1000 / SCREEN_FPS, runMainLoop, val);
