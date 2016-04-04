@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access">
+  <Class Name="AABB">
+    <Position X="4" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EgAAAABQAAEAAAAACAAgAAiABAAAAAAAAAAAEEAAAAA=</HashCode>
+      <FileName>AABB.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AABB2D">
+    <Position X="2.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAABAAAEAAAAAAAAAAAAABAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>AABB.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BoundingSphere">
+    <Position X="4" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAgAAAEAEAAAAAAAAgAAAAAACAAACIAAEAAAAAA=</HashCode>
+      <FileName>BoundingSphere.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollisionResult">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAQEAAAAAAgAAgAAAAAAgA=</HashCode>
+      <FileName>CollisionResult.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollisionResult2D">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQEAAgAAAAIAgAAAAAAgA=</HashCode>
+      <FileName>CollisionResult.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameObject">
+    <Position X="8" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAEAAAAAAAAAAAABBAAQAAAAIAAAAAAAIUAAA=</HashCode>
+      <FileName>GameObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameObject2D">
+    <Position X="4.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAEAAAAAAAAAAAABBAAQAAAAIAAAAAAAAUAAA=</HashCode>
+      <FileName>GameObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Octree">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAABTSCAAEJAhEAOAEkAQgAAAEAgAAQBASEkSaACAIQ=</HashCode>
+      <FileName>Octree.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Physical">
+    <Position X="5.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAKAAAEAABAAAAAiABQMQCABAAAAIIAAAAAAEEAgA=</HashCode>
+      <FileName>Physical.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Physical2D">
+    <Position X="2.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAIAAAEEABAAAAAigBQEQCAAAAAAAIAAAAAAEEAgA=</HashCode>
+      <FileName>Physical.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player2D">
+    <Position X="4.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BIAAAAAAEAACAAAAAAEABAAAAAAAAAIAQggAAAAUAAA=</HashCode>
+      <FileName>Player2D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player3D">
+    <Position X="7.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAEAACAAAACAEABAAAAAAAAAIggggAAAAUAAA=</HashCode>
+      <FileName>Player3D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quadtree">
+    <Position X="0.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAABTSCAAEJAhAAGBEEAQgAAAEAgAAQBAQEkSSCCAIQ=</HashCode>
+      <FileName>Quadtree.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ray">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABQIgAAAgAiAAAAAAAAAAAABAAEIAAAgAAAICAAAA=</HashCode>
+      <FileName>Ray.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vec2">
+    <Position X="2.25" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAACIABAQAgAAAAQABAAUBggAAIAQA=</HashCode>
+      <FileName>Vector.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vec3">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAQCAAAAIABAQAgAAAAQIBAAUFgAQEIAQA=</HashCode>
+      <FileName>Vector.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="OBJECT_TYPES">
+    <Position X="8.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAgAI=</HashCode>
+      <FileName>GameObject.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

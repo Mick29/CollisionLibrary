@@ -4,12 +4,11 @@ and may not be redistributed without written permission.*/
 
 #include "LUtil.h"
 #include "GLShapes.h"
-#include "Ray.h"
-#include "Quadtree.h"
-#include "GameObject.h"
+#include "CollisionAPI.h"
 #include "Player3D.h"
 #include "Player2D.h"
 #include <set>
+#include <algorithm>
 
 Octree* test;
 Quadtree* test2d;
@@ -43,7 +42,7 @@ bool initGL2D() {
 	for (int i = 0; i < 10; i++) {
 		float xp = 0 + (rand() * (int)(SCREEN_WIDTH - 0) / RAND_MAX);
 		float yp = (0 + (rand() * (int)(SCREEN_HEIGHT - 0) / RAND_MAX));
-		Physical2D* o = new Physical2D(Vec2(xp, yp), AABB2D(Vec2(0, 0), Vec2(10, 10)));
+		Physical2D* o = new Physical2D(Vec2(xp, yp), AABB2D(Vec2(0, 0), Vec2(32, 32)));
 		//Physical* o = new Physical(Vec3(xp, yp, zp), BoundingSphere(50, Vec3(xp, yp, zp)));
 		o->id = i;
 		o->mStatic = true;
@@ -191,6 +190,20 @@ void update2D() {
 
 	test2d->updateTree(1000 / SCREEN_FPS);
 
+	if (!test2d->isCollisionEnabled()) {
+		AABB2D region = player2d->getBoundingBox();
+		std::vector<Physical2D*> objectsTest = test2d->checkQuery(region);
+		std::set<Physical2D*> objectsReduce(objectsTest.begin(), objectsTest.end());
+
+		for (Physical2D* obj : objectsReduce) {
+			if (obj != player2d) {
+				if (obj->getBoundingBox().intersect(player2d->getBoundingBox())) {
+					player2d->handleCollision(obj);
+				}
+			}
+		}
+	}
+
 	//if (queryRect.mMax.x < 10000.0f) {
 	//	queryRect.mMin.x += 20.0f;
 	//	queryRect.mMax.x += 20.0f;
@@ -218,6 +231,10 @@ float getDistance(Vec3 p1, Vec3 p2) {
 
 void update()
 {
+	for (Physical* obj : objects) {
+		obj->update(1000 / SCREEN_FPS);
+	}
+
 	player->update(1000 / SCREEN_FPS);
 
 	test->updateTree(1000 / SCREEN_FPS);
@@ -268,10 +285,6 @@ void update()
 	//y += newY;
 
 	//newY = 0;
-
-	//for (Physical* obj : objects) {
-	//	obj->update(1000 / SCREEN_FPS);
-	//}
 }
 
 void render()
@@ -320,7 +333,7 @@ void render()
 		else if (colorID == 4)
 			glColor3f(0xFF, 0xFF, 0x00);
 
-		if(obj->id == -1)
+		if(obj->id == -1 || obj->mCollisionDetected)
 			glColor3f(0xFF, 0xFF, 0xFF);
 
 		//glTranslatef(obj->getPosition().x, obj->getPosition().y, obj->getPosition().z);
@@ -505,6 +518,9 @@ void Keyboard(unsigned char key, int x, int y) {
 	case 'v':
 		if (mode == 1) {
 			test->toggleCollision();
+		}
+		else {
+			test2d->toggleCollision();
 		}
 		break;
 	//case 'r':

@@ -73,6 +73,8 @@ void Player2D::handleCollision(Physical2D* other) {
 
 	this->mVelocity.y = 0.0f;
 	this->mOnGround = true;
+
+	other->mCollisionDetected = true;
 }
 
 void Player2D::handleInput(unsigned char key, int x, int y) {

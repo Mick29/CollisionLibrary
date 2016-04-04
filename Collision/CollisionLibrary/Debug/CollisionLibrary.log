@@ -1,1 +1,15 @@
-﻿  CollisionLibrary.vcxproj -> C:\Users\micha\Documents\Visual Studio 2015\Projects\CollisionLibrary\Collision\Debug\CollisionLibrary.exe
+﻿  main.cpp
+c:\users\micha\onedrive\documents\visual studio 2015\projects\collisionlibrary\collision\collisionlibrary\main.cpp(88): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  Octree.cpp
+c:\users\micha\onedrive\documents\visual studio 2015\projects\collisionlibrary\collision\collisionlibrary\octree.cpp(253): warning C4018: '<': signed/unsigned mismatch
+c:\users\micha\onedrive\documents\visual studio 2015\projects\collisionlibrary\collision\collisionlibrary\octree.cpp(463): warning C4018: '<': signed/unsigned mismatch
+c:\users\micha\onedrive\documents\visual studio 2015\projects\collisionlibrary\collision\collisionlibrary\octree.cpp(472): warning C4018: '<': signed/unsigned mismatch
+c:\users\micha\onedrive\documents\visual studio 2015\projects\collisionlibrary\collision\collisionlibrary\octree.cpp(631): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\micha\onedrive\documents\visual studio 2015\projects\collisionlibrary\collision\collisionlibrary\octree.cpp(632): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\micha\onedrive\documents\visual studio 2015\projects\collisionlibrary\collision\collisionlibrary\octree.cpp(633): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\micha\onedrive\documents\visual studio 2015\projects\collisionlibrary\collision\collisionlibrary\octree.cpp(641): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\micha\onedrive\documents\visual studio 2015\projects\collisionlibrary\collision\collisionlibrary\octree.cpp(642): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\micha\onedrive\documents\visual studio 2015\projects\collisionlibrary\collision\collisionlibrary\octree.cpp(643): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\micha\onedrive\documents\visual studio 2015\projects\collisionlibrary\collision\collisionlibrary\octree.cpp(644): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  Generating Code...
+  CollisionLibrary.vcxproj -> C:\Users\micha\OneDrive\Documents\Visual Studio 2015\Projects\CollisionLibrary\Collision\Debug\CollisionLibrary.exe

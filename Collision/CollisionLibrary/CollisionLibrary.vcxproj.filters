@@ -113,10 +113,16 @@
     <ClInclude Include="Player2D.h">
       <Filter>Header Files\2D Game</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionAPI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CollisionLibrary.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

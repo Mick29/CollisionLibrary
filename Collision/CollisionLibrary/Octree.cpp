@@ -10,7 +10,7 @@ bool Octree::mBuilt = false;
 bool Octree::mNeedsResize = false;
 bool Octree::mPrintChecks = false;
 //Used to get new bounds
-std::vector<Physical*> mOutboundObjects;
+std::vector<Physical*> Octree::mOutboundObjects;
 //Stores pending insertion objects (Not used)
 std::vector<Physical*> Octree::mPendingInsertion;
 //Test amount of collision checks for comparison to brute force
@@ -22,6 +22,7 @@ Octree::Octree(AABB bounding, std::vector<Physical*> objects) {
 
 	//Set objects
 	mObjects = objects;
+	mOutboundObjects = objects;
 
 	//Set lifespan for 8 cycles
 	mMaxLifespan = 8;
@@ -404,6 +405,7 @@ void Octree::updateTree(unsigned int dt) {
 			if (!obj->getBoundingBox().intersect(root->mBounds)) {
 				//Add the object to the root of the tree
 				root->mObjects.push_back(obj);
+				mOutboundObjects.push_back(obj);
 
 				//Needs to resize the tree
 				mNeedsResize = true;
@@ -449,6 +451,8 @@ void Octree::updateTree(unsigned int dt) {
 				this->resize(mBounds);
 
 				mNeedsResize = false;
+
+				mOutboundObjects.clear();
 			}
 		}
 	}
@@ -498,6 +502,7 @@ void Octree::insertObject(Physical* obj) {
 
 	if (!obj->getBoundingBox().intersect(root->mBounds)) {
 		root->mObjects.push_back(obj);
+		mOutboundObjects.push_back(obj);
 
 		mNeedsResize = true;
 
@@ -546,8 +551,6 @@ void Octree::insertObject(Physical* obj) {
 		if (!found) {
 			mObjects.push_back(obj);
 		}
-
-		//buildTree();
 	}
 	else if (obj->getBoundingSphere().getRadius() != 0 && mBounds.containsPoint(obj->getBoundingSphere().getCentre())) {
 		bool found = false;
@@ -588,7 +591,7 @@ void Octree::findNewBoundary() {
 	Vec3 globalMin = mBounds.getMin();
 	Vec3 globalMax = mBounds.getMax();
 
-	for (Physical* obj : mObjects) {
+	for (Physical* obj : mOutboundObjects) {
 		Vec3 localMin = Vec3::ZERO;
 		Vec3 localMax = Vec3::ZERO;
 
@@ -732,13 +735,6 @@ int Octree::getLevel() {
 
 std::vector<Physical*> Octree::checkQuery(AABB region) {
 	std::vector<Physical*> objects;
-	//for (Physical* obj : mObjects) {
-	//	if (obj->getBoundingBox(false).mMax != obj->getBoundingBox(false).mMin) {
-	//		if (region.intersect(obj->getBoundingBox())) {
-	//			objects.push_back(obj);
-	//		}
-	//	}
-	//}
 
 	if (region.intersect(mBounds)) {
 		for (Physical* obj : mObjects) {
@@ -748,9 +744,11 @@ std::vector<Physical*> Octree::checkQuery(AABB region) {
 
 	for (int i = 0; i < 8; i++) {
 		if (mNodes[i] != NULL) {
-			std::vector<Physical*> nodeObjects = mNodes[i]->checkQuery(region);
-			for (Physical* obj : nodeObjects) {
-				objects.push_back(obj);
+			if (mNodes[i]->getBounds().intersect(region)) {
+				std::vector<Physical*> nodeObjects = mNodes[i]->checkQuery(region);
+				for (Physical* obj : nodeObjects) {
+					objects.push_back(obj);
+				}
 			}
 		}
 	}
@@ -774,6 +772,10 @@ int Octree::getObjectSize(bool duplicate) {
 	}
 
 	return size;
+}
+
+bool isStatic(Physical* o) {
+	return o->mStatic;
 }
 
 std::vector<CollisionResult*> Octree::getIntersection(std::vector<Physical*> objects) {
@@ -812,8 +814,7 @@ std::vector<CollisionResult*> Octree::getIntersection(std::vector<Physical*> obj
 	}
 
 	for (Physical* obj : mObjects) {
-		//if(!obj->mStatic)
-			objects.push_back(obj);
+		objects.push_back(obj);
 	}
 
 	int i = 0;

@@ -1,6 +1,6 @@
 #pragma once
 
-#define GRAVITY_SPEED -1.5
+#define GRAVITY_SPEED 0.2
 
 #include "Vector.h"
 #include "AABB.h"
@@ -22,7 +22,7 @@ public:
 	BoundingSphere getBoundingSphere();
 	void setBoundingSphere(BoundingSphere sphere);
 
-	virtual void handleCollision(Physical* other) {};
+	virtual void handleCollision(Physical* other) { mCollisionDetected = true; };
 
 	bool mHasBounds;
 
@@ -35,6 +35,7 @@ public:
 	int id;
 	bool mAlive;
 	bool mStatic;
+	bool mCollisionDetected;
 protected:
 	Vec3 mPosition;
 	AABB mBoundingBox;
@@ -60,7 +61,7 @@ public:
 	//BoundingSphere getBoundingSphere();
 	//void setBoundingSphere(BoundingSphere sphere);
 
-	virtual void handleCollision(Physical2D* other) {};
+	virtual void handleCollision(Physical2D* other) { mCollisionDetected = true; };
 
 	bool mHasBounds;
 
@@ -73,6 +74,7 @@ public:
 	int id;
 	bool mAlive;
 	bool mStatic;
+	bool mCollisionDetected;
 protected:
 	Vec2 mPosition;
 	AABB2D mBoundingBox;

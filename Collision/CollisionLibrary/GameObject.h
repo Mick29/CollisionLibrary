@@ -16,7 +16,7 @@ public:
 
 	virtual bool init() { return true; };
 
-	virtual void update(unsigned int dt) {};
+	virtual void update(unsigned int dt) { Physical::update(dt); };
 
 	virtual void render() {};
 

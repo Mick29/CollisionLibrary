@@ -26,31 +26,39 @@ void Player3D::update(unsigned int dt) {
 	mHasMoved = false;
 
 	if (mDirection.z == 1) {
-		if (mVelocity.z >= 50) {
-			mVelocity.z = 50.0f;
+		if (mVelocity.z >= 5) {
+			mVelocity.z = 5.0f * dt;
 		}
 	}
 	else {
-		if (mVelocity.z <= -50) {
-			mVelocity.z = -50.0f;
+		if (mVelocity.z <= -5) {
+			mVelocity.z = -5.0f * dt;
 		}
 	}
 
 	if (mDirection.x == 1) {
-		if (mVelocity.x >= 50) {
-			mVelocity.x = 50.0f;
+		if (mVelocity.x >= 5) {
+			mVelocity.x = 5.0f * dt;
 		}
 	}
 	else {
-		if (mVelocity.x <= -50) {
-			mVelocity.x = -50.0f;
+		if (mVelocity.x <= -5) {
+			mVelocity.x = -5.0f * dt;
 		}
+	}
+
+	if (mVelocity.y <= -5.0f * dt) {
+		mVelocity.y = -5.0f * dt;
+	}
+
+	if (mVelocity.y >= 5.0f * dt) {
+		mVelocity.y = 5.0f * dt;
 	}
 	
 	//Get position before gravity for checking if moved
 	Vec3 tempPos = mPosition + mVelocity;
 
-	mVelocity.y += GRAVITY_SPEED;
+	mVelocity.y -= (GRAVITY_SPEED * dt);
 
 	mPosition += mVelocity;
 
@@ -84,6 +92,8 @@ void Player3D::handleCollision(Physical* other) {
 
 	this->mVelocity.y = 0.0f;
 	this->mOnGround = true;
+
+ 	other->mCollisionDetected = true;
 }
 
 void Player3D::handleInput(unsigned char key, int x, int y) {
@@ -105,7 +115,7 @@ void Player3D::handleInput(unsigned char key, int x, int y) {
 		mDirection.x = 1;
 		break;
 	case ' ':
-		mVelocity.y += 50.0f;
+		mVelocity.y += 100.0f;
 		mDirection.y = 1;
 		mOnGround = false;
 		break;

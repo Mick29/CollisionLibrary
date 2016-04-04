@@ -1,8 +1,8 @@
 #include "Physical.h"
 
-Physical::Physical() : mPosition(Vec3::ZERO), mBoundingBox(AABB(Vec3::ZERO, Vec3::ZERO)), mHasBounds(false), mAlive(true), timer(50), goRight(true), mHasMoved(false), mStatic(true) {}
-Physical::Physical(const Vec3& pos,const AABB& box) : mPosition(pos), mBoundingBox(box), mHasBounds(true), mAlive(true), timer(50), goRight(true), mHasMoved(false), mBoundingSphere(BoundingSphere(0, Vec3::ZERO)), mStatic(true) {}
-Physical::Physical(const Vec3& pos, const BoundingSphere& sphere) : mPosition(pos), mBoundingBox(AABB(Vec3::ZERO, Vec3::ZERO)), mHasBounds(true), mAlive(true), timer(50), goRight(true), mHasMoved(false), mBoundingSphere(sphere), mStatic(true) {}
+Physical::Physical() : mPosition(Vec3::ZERO), mBoundingBox(AABB(Vec3::ZERO, Vec3::ZERO)), mHasBounds(false), mAlive(true), timer(500), goRight(true), mHasMoved(false), mStatic(true), mCollisionDetected(false){}
+Physical::Physical(const Vec3& pos,const AABB& box) : mPosition(pos), mBoundingBox(box), mHasBounds(true), mAlive(true), timer(500), goRight(true), mHasMoved(false), mBoundingSphere(BoundingSphere(0, Vec3::ZERO)), mStatic(true), mCollisionDetected(false){}
+Physical::Physical(const Vec3& pos, const BoundingSphere& sphere) : mPosition(pos), mBoundingBox(AABB(Vec3::ZERO, Vec3::ZERO)), mHasBounds(true), mAlive(true), timer(500), goRight(true), mHasMoved(false), mBoundingSphere(sphere), mStatic(true), mCollisionDetected(false) {}
 Physical::~Physical() {}
 
 Vec3 Physical::getPosition() {
@@ -29,7 +29,7 @@ void Physical::setBoundingBox(AABB box) {
 	mHasBounds = true;
 }
 
-void Physical::update(unsigned int dt) {}
+void Physical::update(unsigned int dt) { mCollisionDetected = false; }
 
 bool Physical::isAlive() {
 	return mAlive;
